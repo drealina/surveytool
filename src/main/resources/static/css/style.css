@@ -1,0 +1,8 @@
+.ml-auto {
+    left: auto !important;
+    right: 0px;
+}
+
+div.thick {
+    font-weight: bold;
+}

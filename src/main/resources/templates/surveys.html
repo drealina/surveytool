@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+
+    <title>Umfragen</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="page-header">
+    </div>
+    <div class="container">
+        <h2 style="	text-decoration: underline">Alle Umfragen</h2>
+        <div>&nbsp;</div>
+        <a class="btn btn-outline-success btn-sm" href="mysurveys"> zu meinen Umfragen</a>
+        <div>&nbsp;</div>
+        <div class="card-block" th:if="${data.totalPages}==0">
+            Es gibt noch keine aktiven Umfragen.
+        </div>
+        <div class="card-block" th:if="${data.totalPages}>0">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>Name der Umfrage</th>
+                    <th>Beschreibung</th>
+                    <th>Aktion</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="survey : ${data}">
+                    <td th:text="${survey.name}"></td>
+                    <td th:text="${survey.description}"></td>
+                    <td>
+                        <a class="btn btn-outline-success" href="teilnehmen">Teilnehmen</a>
+                        <a class="btn btn-outline-primary" href="auswertung">Auswertung</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <hr/>
+            <ul class="nav nav-pills">
+                <li class="nav-item"
+                    th:each="i : ${#numbers.sequence(0,data.totalPages-1)}"><a
+                        class="nav-link" th:classappend="${currentPage}==${i}?'active':''" th:href="@{/surveys(page=${i})}"
+                        th:text="${i}"></a></li>
+            </ul>
+        </div>
+    </div>
+
+    </div>
+</div>
+</body>
+</html>
+

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.w3.org/1999/xhtml"
+xmlns:sec="http://www.w3.org/1999/xhtml" layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Umfrage bearbeiten</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="page-header">
+    </div>
+    <div class="container">
+        <h2 style="	text-decoration: underline"> Umfrage bearbeiten </h2>
+        <div>&nbsp;</div>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editsurveyModal"><i class="fa fa-cog"></i></button>
+        <div class="row">
+            <div class="form-group col-sm-12">
+                <label class="col-form-label" for="name">Name der Umfrage:</label>
+                <input class="form-control" id="name" name="name" type="text" th:value="${survey.name}" readonly/>
+            </div>
+            <div class="form-group col-sm-12">
+                <label class="col-form-label" for="description">Beschreibung:</label>
+                <input class="form-control" id="description" name="description" type="text" th:value="${survey.description}" readonly/>
+            </div>
+            <div>&nbsp;</div>
+            <button class="btn btn-success" data-toggle="modal" data-target="#questionModal">Frage hinzufügen</button>
+        </div>
+        <th:block  th:each="question : ${questions}" >
+            <div>&nbsp;</div>
+            <div class="row">
+            <div class="thick" th:text="${question.question}"></div>
+                <div>&nbsp;</div>
+            <button onclick="setChangeQuestionId(this.id);" th:id="${question.id}" type="button" class="btn btn-outline-primary btn-sm" ><i class="fa fa-cog"></i></button>
+                <div>&nbsp;</div>
+            <a class="btn btn-outline-danger btn-sm" th:href="@{/deleteQuestion/(id=${question.id})}"><i class="fa fa-trash-o"></i></a>
+            </div>
+            <div>&nbsp;</div>
+            <div class="row" th:each="answer : ${question.answers}" >
+                <button onclick="setChangeAnswerId(this.id);" th:id="${answer.id}" type="button" class="btn btn-outline-primary btn-sm" ><i class="fa fa-cog"></i></button>
+                <div>&nbsp;</div>
+                <a class="btn btn-outline-danger btn-sm" th:href="@{/deleteAnswer/(id=${answer.id})}"><i class="fa fa-trash-o"></i></a>
+                <div>&nbsp;</div>
+                <div  th:text="${answer.answer}"></div>
+            </div>
+            <div>&nbsp;</div>
+            <button onclick="setCreateAnswerToQuestion(this.id);" th:id="${question.id}" class="btn btn-success btn-sm" data-toggle="modal" data-target="#answerModal">Antwort hinzufügen</button>
+        </th:block>
+
+
+        <div class="questionForm">
+        <form action="#" method="post" th:action="@{/addQuestion}">
+            <div aria-hidden="true" aria-labelledby="questionModalLabel" class="modal fade"
+                 id="questionModal" role="dialog"
+                 tabindex="-1">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="questionModalLabel">neue Frage hinzufügen</h5>
+                            <button aria-label="Close" class="close" data-dismiss="modal"
+                                    type="button">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <input class="form-control" id="id2" name="surveyId" type="hidden" th:value="${survey.id}"/>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label" for="question">Frage:</label>
+                                <input class="form-control" id="question" name="question" type="text" value=""/>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" data-dismiss="modal"
+                                        type="button">schließen
+                                </button>
+                                <input class="btn btn-primary" type="submit" value="sichern"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+        <div class="editSurveyForm">
+            <form action="#" method="post" th:action="@{/changeSurvey}">
+                <div aria-hidden="true" aria-labelledby="changeModalLabel" class="modal fade"
+                     id="editsurveyModal" role="dialog"
+                     tabindex="-1">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="changeModalLabel">Umfrage bearbeiten</h5>
+                                <button aria-label="Close" class="close" data-dismiss="modal"
+                                        type="button">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <input class="form-control" id="id" name="id" type="hidden" th:value="${survey.id}"/>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-form-label" for="name">Name der Umfrage:</label>
+                                    <input class="form-control" id="name2" name="name" type="text" th:value="${survey.name}"/>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-form-label" for="description">Beschreibung:</label>
+                                    <input class="form-control" id="description2" name="description" type="text" th:value="${survey.description}"/>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-secondary" data-dismiss="modal"
+                                            type="button">schließen
+                                    </button>
+                                    <input class="btn btn-primary" type="submit" value="sichern"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+
+        <div class="questioneditForm">
+        <form action="#" method="post" th:action="@{/changeQuestion}">
+            <div aria-hidden="true" aria-labelledby="questioneditModalLabel" class="modal fade"
+                 id="questioneditModal" role="dialog"
+                 tabindex="-1">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="questioneditModalLabel">Frage bearbeiten</h5>
+                            <button aria-label="Close" class="close" data-dismiss="modal"
+                                    type="button">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <input class="form-control" id="id3" name="surveyId" type="hidden" th:value="${survey.id}"/>
+                            </div>
+                            <div class="form-group">
+                                <input class="form-control" id="id4" name="id" type="hidden" value="0"/>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label" for="question">Frage:</label>
+                                <input class="form-control" id="question1" name="question" type="text" value=""/>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" data-dismiss="modal"
+                                        type="button">schließen
+                                </button>
+                                <input class="btn btn-primary" type="submit" value="sichern"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+
+           <div class="answereditForm">
+               <form action="#" method="post" th:action="@{/changeAnswer}">
+                   <div aria-hidden="true" aria-labelledby="answereditModalLabel" class="modal fade"
+                        id="answereditModal" role="dialog"
+                        tabindex="-1">
+                       <div class="modal-dialog" role="document">
+                           <div class="modal-content">
+                               <div class="modal-header">
+                                   <h5 class="modal-title" id="answereditModalLabel">Antwort bearbeiten</h5>
+                                   <button aria-label="Close" class="close" data-dismiss="modal"
+                                           type="button">
+                                       <span aria-hidden="true">&times;</span>
+                                   </button>
+                               </div>
+                               <div class="modal-body">
+                                   <div class="form-group">
+                                       <input class="form-control" id="id6" name="id" type="hidden" value="0"/>
+                                   </div>
+                                   <div class="form-group">
+                                      <label class="col-form-label" for="answer">Antwort:</label>
+                                    <input class="form-control" id="answer" name="answer" type="text" value=""/>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-secondary" data-dismiss="modal"
+                                            type="button">schließen
+                                    </button>
+                                    <input class="btn btn-primary" type="submit" value="sichern"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+        <div class="answerForm">
+            <form action="#" method="post" th:action="@{/addAnswer}">
+                <div aria-hidden="true" aria-labelledby="answerModalLabel" class="modal fade"
+                     id="answerModal" role="dialog"
+                     tabindex="-1">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="answerModalLabel">neue Antwort hinzufügen</h5>
+                                <button aria-label="Close" class="close" data-dismiss="modal"
+                                        type="button">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <input class="form-control" id="id7" name="questionId" type="hidden" value="0"/>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-form-label" for="answer1">Antwort:</label>
+                                    <input class="form-control" id="answer1" name="answer" type="text" value=""/>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-secondary" data-dismiss="modal"
+                                            type="button">schließen
+                                    </button>
+                                    <input class="btn btn-primary" type="submit" value="sichern"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+
+    </div>
+
+
+<!-- Java Script -->
+<script>
+    function setChangeQuestionId(id) {
+        $("#id4").val(id);
+        $.get('/getOneQuestion?id='+id,function(question){
+           $('#question1').val(question.question);
+           $('#questioneditModal').modal();
+        });
+    }
+
+
+    function setChangeAnswerId(id) {
+        $("#id6").val(id);
+        $.get('/getOneAnswer?id='+id,function(answer){
+            $('#answer').val(answer.answer);
+            $('#answereditModal').modal();
+        });
+    }
+
+
+    function setCreateAnswerToQuestion(id) {
+        $("#id7").val(id);
+    }
+
+
+</script>
+
+
+</div>
+</body>
+</html>
+

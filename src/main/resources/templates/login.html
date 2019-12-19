@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <div class="page-header">
+    </div>
+    <div class="container">
+        <div class="row">
+            <h2 class="col-sm-12">Login bei A&T Online Survey</h2>
+            <form action="/login" method="post" class="col-sm-12 form-horizontal">
+                <div th:if="${param.error}" class="form-group">
+                    <div class="text-danger">
+                        <strong>Login fehlgeschlagen, bitte versuchen Sie es erneut</strong>
+                    </div>
+                </div>
+
+                <div th:if="${param.logout}" class="col-sm-12 form-group">
+                    <div>
+                        <strong>Sie haben sich erfolgreich abgemeldet</strong>
+                    </div>
+                </div>
+
+                <div class="col-sm-12 form-group">
+                    <label for="inputUsername" class="col-sm-1 control-label">Nutzername</label>
+                    <div>
+                        <input type="text" class="form-control" id="inputUsername" name="username"
+                               placeholder="Nutzername" th:value="${userName}"/>
+                    </div>
+                </div>
+                <div class="col-sm-12 form-group">
+                    <label for="inputPassword" class="col-sm-1 control-label">Passwort</label>
+                    <div>
+                        <input type="password" class="form-control" id="inputPassword" name="password"
+                               placeholder="Passwort" th:value="${userPassword}"/>
+                    </div>
+                </div>
+                <div class="col-sm-12 form-group">
+                        <button type="submit" class="btn btn-success">Anmelden</button>
+                    <a href="/registration" class="btn btn-danger">Registrieren</a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

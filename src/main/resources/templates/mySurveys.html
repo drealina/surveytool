@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <title>Umfragen</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="page-header">
+    </div>
+    <div class="container">
+        <h2 style="	text-decoration: underline"> Meine Umfragen </h2>
+        <div>&nbsp;</div>
+        <button class="btn btn-success nBtn" data-toggle="modal" data-target="#surveyModal">Neue Umfrage anlegen</button>
+        <div>&nbsp;</div>
+        <div class="card-block" th:if="${data.totalPages}==0">
+            Sie haben noch keine Umfragen angelegt.
+        </div>
+        <div class="card" th:if="${data.totalPages}>0">
+            <div class="card-block">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>Name der Umfrage</th>
+                        <th>Beschreibung</th>
+                        <th>Status</th>
+                        <th>Aktion</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="survey : ${data}">
+                        <td th:text="${survey.name}"></td>
+                        <td th:text="${survey.description}"></td>
+                        <td>
+                            <a th:if="${survey.active}" class="btn btn-outline-success" th:href="@{disable/(surveyId=${survey.id})}"><i class="fa fa-check"></i></a>
+                            <a th:if="${!survey.active}"class="btn btn-outline-danger" th:href="@{enable/(surveyId=${survey.id})}"><i class="fa fa-times"></i></a>
+                        </td>
+                        <td>
+                            <a class="btn btn-outline-primary eBtn" th:href="@{editSurvey/(id=${survey.id})}"><i class="fa fa-cog"></i></a>
+                            <a class="btn btn-outline-danger delBtn" th:href="@{delete/(id=${survey.id})}"><i class="fa fa-trash-o"></i></a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <hr/>
+                <ul class="nav nav-pills">
+                    <li class="nav-item"
+                        th:each="i : ${#numbers.sequence(0,data.totalPages-1)}"><a
+                            class="nav-link" th:classappend="${currentPage}==${i}?'active':''" th:href="@{/mysurveys(page=${i})}"
+                            th:text="${i}"></a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="myForm">
+            <form action="#" method="post" th:action="@{/surveys/save}">
+                <div aria-hidden="true" aria-labelledby="surveyModalLabel" class="modal fade"
+                     id="surveyModal" role="dialog"
+                     tabindex="-1">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="surveyModalLabel">Neue Umfrage anlegen</h5>
+                                <button aria-label="Close" class="close" data-dismiss="modal"
+                                        type="button">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                         <div class="modal-body">
+                                <div class="form-group">
+                                    <label class="col-form-label" for="name">Name der Umfrage:</label>
+                                    <input class="form-control" id="name" name="name" type="text" value=""/>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-form-label" for="description">Beschreibung:</label>
+                                    <input class="form-control" id="description" name="description" type="text" value=""/>
+                                </div>
+                                    <input class="form-control" id="active" name="active" type="hidden" value="false"/>
+                                    <input class="form-control" id="userId" name="userId" type="hidden" th:value="${userId}"/>
+                                <div class="modal-footer">
+                                    <button class="btn btn-secondary" data-dismiss="modal"
+                                            type="button">schließen
+                                    </button>
+                                    <input class="btn btn-primary" type="submit" value="sichern"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>
+
