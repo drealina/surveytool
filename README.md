@@ -6,15 +6,9 @@ Online-Umfragetool.
 
 Mit dem Tool können angemeldete Nutzer eigene Umfragen anlegen. Jede Umfrage hat mindestens
 einen Titel und besteht aus einer Reihe von Fragen. Für jede Frage müssen 2 oder mehr
-Antwort-Kandidaten angeboten werden. Beispielfragen wären etwa
-"Welche Veranstaltung hat Ihnen am besten gefallen?" oder
-"Wer sollte bei der nächsten Wahl Bürgermeister werden?"
+Antwort-Kandidaten angeboten werden. 
 Eine fertig erstellte Umfrage kann freigeschaltet werden, erst dann ist sie für andere
 sichtbar und steht zur Teilnahme bereit.
-Als Teilnehmer einer Umfrage muss man sich für eine der Antworten entscheiden
-(oder kann eine Zusatzantwort "Weiß nicht" auswählen).
-Für jede Umfrage kann man sich eine Zwischenauswertung anzeigen lassen
-(23% für Antwort A, 65% für Antwort B, 10% für Antwort C und 2% Weiß nicht)..
 
 Hier ein paar User-Stories:
 Als Nutzer kann ich …
